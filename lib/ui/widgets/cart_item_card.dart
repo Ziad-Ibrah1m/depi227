@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/cart_item.dart';
 import '../../providers/cart_provider.dart';
-import '../../providers/auth_provider.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_styles.dart';
 
 class CartItemCard extends StatelessWidget {
   final CartItem cartItem;
+  static const String userId = 'default_user';
 
   const CartItemCard({Key? key, required this.cartItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -89,7 +88,7 @@ class CartItemCard extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   cartProvider.removeFromCart(
-                    authProvider.currentUser!.id,
+                    userId,
                     cartItem.id,
                   );
                 },
@@ -101,7 +100,7 @@ class CartItemCard extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       cartProvider.updateQuantity(
-                        authProvider.currentUser!.id,
+                        userId,
                         cartItem.id,
                         cartItem.quantity - 1,
                       );
@@ -126,7 +125,7 @@ class CartItemCard extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       cartProvider.updateQuantity(
-                        authProvider.currentUser!.id,
+                        userId,
                         cartItem.id,
                         cartItem.quantity + 1,
                       );

@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => MedicineProvider()),
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Roboto',
           scaffoldBackgroundColor: const Color(0xFFF5F7FA),
         ),
-        home: const SplashScreen(),
+        home: const HomeScreen(),
       ),
     );
   }

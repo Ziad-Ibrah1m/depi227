@@ -1,5 +1,4 @@
 import '../models/cart_item.dart';
-import '../models/medicine.dart';
 import '../services/firestore_service.dart';
 
 class CartRepository {

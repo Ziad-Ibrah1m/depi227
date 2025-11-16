@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../providers/auth_provider.dart';
 import '../../providers/medicine_provider.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/favorites_provider.dart';
+import '../../providers/pharmacy_provider.dart';
 import '../../utils/colors.dart';
 import '../../utils/constants.dart';
 import '../widgets/search_bar.dart';
@@ -31,6 +31,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final TextEditingController _searchController = TextEditingController();
+  // Mock user ID - replace with your actual user ID or authentication system
+  static const String userId = 'default_user';
 
   @override
   void initState() {
@@ -40,16 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _loadData() {
     final medicineProvider = Provider.of<MedicineProvider>(context, listen: false);
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final favoritesProvider = Provider.of<FavoritesProvider>(context, listen: false);
     
     medicineProvider.loadMedicines();
-    
-    if (authProvider.currentUser != null) {
-      cartProvider.loadCartItems(authProvider.currentUser!.id);
-      favoritesProvider.loadFavorites(authProvider.currentUser!.id);
-    }
+    cartProvider.loadCartItems(userId);
+    favoritesProvider.loadFavorites(userId);
   }
 
   @override
@@ -106,48 +104,34 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHeader() {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final user = authProvider.currentUser;
-
     return Container(
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           CircleAvatar(
             radius: 24,
-            backgroundImage: user?.photoUrl != null
-                ? NetworkImage(user!.photoUrl!)
-                : const AssetImage('assets/images/user_placeholder.png') as ImageProvider,
-            child: user?.photoUrl == null
-                ? Text(
-                    user?.name.substring(0, 1).toUpperCase() ?? 'U',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  )
-                : null,
+            backgroundColor: AppColors.lightBlue,
+            child: const Icon(Icons.person, size: 28, color: AppColors.primaryBlue),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 Text(
-                  user?.name ?? 'Guest',
-                  style: const TextStyle(
+                  'Hello, User',
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
                   ),
                 ),
                 Row(
-                  children: const [
+                  children: [
                     Icon(Icons.location_on, size: 14, color: AppColors.textGray),
                     SizedBox(width: 4),
                     Text(
-                      'sidi bash...',
+                      'Alexandria, Egypt',
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textGray,

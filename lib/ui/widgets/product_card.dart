@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import '../../data/models/medicine.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/favorites_provider.dart';
-import '../../providers/auth_provider.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_styles.dart';
 
 class ProductCard extends StatelessWidget {
   final Medicine medicine;
   final VoidCallback? onTap;
+  static const String userId = 'default_user';
 
   const ProductCard({
     Key? key,
@@ -19,7 +19,6 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
 
@@ -71,12 +70,10 @@ class ProductCard extends StatelessWidget {
                   right: 8,
                   child: GestureDetector(
                     onTap: () {
-                      if (authProvider.currentUser != null) {
-                        favoritesProvider.toggleFavorite(
-                          authProvider.currentUser!.id,
-                          medicine.id,
-                        );
-                      }
+                      favoritesProvider.toggleFavorite(
+                        userId,
+                        medicine.id,
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.all(6),
@@ -138,18 +135,16 @@ class ProductCard extends StatelessWidget {
                     height: 36,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (authProvider.currentUser != null) {
-                          cartProvider.addToCart(
-                            medicine,
-                            authProvider.currentUser!.id,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Added to cart'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        }
+                        cartProvider.addToCart(
+                          medicine,
+                          userId,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Added to cart'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.buttonBlue,

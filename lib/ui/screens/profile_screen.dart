@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../providers/auth_provider.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_styles.dart';
 import '../widgets/bottom_nav_bar.dart';
-import 'auth_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -15,12 +12,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int _currentIndex = 2;
+  static const String userName = 'Default User';
+  static const String userEmail = 'user@medlink.com';
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final user = authProvider.currentUser;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -44,28 +40,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: user?.photoUrl != null
-                        ? NetworkImage(user!.photoUrl!)
-                        : null,
-                    child: user?.photoUrl == null
-                        ? Text(
-                            user?.name.substring(0, 1).toUpperCase() ?? 'U',
-                            style: const TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          )
-                        : null,
+                    backgroundColor: AppColors.buttonBlue,
+                    child: Text(
+                      userName.substring(0, 1).toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    user?.name ?? 'User',
+                    userName,
                     style: AppTextStyles.screenHeader,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    user?.email ?? '',
+                    userEmail,
                     style: AppTextStyles.productDescription,
                   ),
                 ],
@@ -113,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildMenuItem(
               icon: Icons.logout,
               title: 'Logout',
-              onTap: () => _handleLogout(context),
+              onTap: () {},
               isDestructive: true,
             ),
           ],
@@ -164,37 +156,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         onTap: onTap,
       ),
     );
-  }
-
-  Future<void> _handleLogout(BuildContext context) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              'Logout',
-              style: TextStyle(color: AppColors.deleteRed),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true) {
-      await Provider.of<AuthProvider>(context, listen: false).signOut();
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const AuthScreen()),
-        );
-      }
-    }
   }
 }

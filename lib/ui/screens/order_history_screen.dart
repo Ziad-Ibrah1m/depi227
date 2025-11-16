@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../providers/auth_provider.dart';
 import '../../data/services/firestore_service.dart';
 import '../../data/models/order.dart';
 import '../../utils/colors.dart';
@@ -19,12 +17,10 @@ class OrderHistoryScreen extends StatefulWidget {
 class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   int _currentIndex = 1;
   final FirestoreService _firestoreService = FirestoreService();
+  static const String userId = 'default_user';
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final userId = authProvider.currentUser?.id;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order History'),
@@ -33,22 +29,16 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
-      body: userId == null
-          ? const EmptyStateWidget(
-              icon: Icons.receipt_outlined,
-              title: 'Not Logged In',
-              message: 'Please login to view your orders',
-            )
-          : StreamBuilder<List<Order>>(
-              stream: _firestoreService.getUserOrders(userId),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      body: StreamBuilder<List<Order>>(
+          stream: _firestoreService.getUserOrders(userId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const EmptyStateWidget(
-                    icon: Icons.receipt_outlined,
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const EmptyStateWidget(
+                icon: Icons.receipt_outlined,
                     title: 'No Orders Yet',
                     message: 'Your order history will appear here',
                   );

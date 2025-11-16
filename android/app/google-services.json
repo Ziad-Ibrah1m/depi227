@@ -12,7 +12,12 @@
           "package_name": "com.example.depi227"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "458884380207-bofos92j0kikii138fkuipa8ondb3m3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDksUnS5fiSdeUeze2HzVoWyreOiNEQwIM"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "458884380207-bofos92j0kikii138fkuipa8ondb3m3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

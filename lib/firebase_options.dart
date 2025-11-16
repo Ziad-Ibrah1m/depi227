@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'depi-f6789',
     storageBucket: 'depi-f6789.firebasestorage.app',
   );
+
 }
