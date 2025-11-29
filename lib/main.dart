@@ -1,46 +1,47 @@
+import 'package:depi227/data/repositories/product_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'providers/auth_provider.dart';
-import 'providers/cart_provider.dart';
-import 'providers/medicine_provider.dart';
-import 'providers/favorites_provider.dart';
-import 'providers/pharmacy_provider.dart';
-import 'ui/screens/splash_screen.dart';
-import 'ui/screens/home_screen.dart';
-import 'ui/screens/auth_screen.dart';
+import 'core/theme/app_theme.dart';
+import 'screens/home_screen.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => CartProvider()),
-        ChangeNotifierProvider(create: (_) => MedicineProvider()),
-        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
-        ChangeNotifierProvider(create: (_) => PharmacyProvider()),
-      ],
-      child: MaterialApp(
-        title: 'Medlink Pharmacy',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: 'Roboto',
-          scaffoldBackgroundColor: const Color(0xFFF5F7FA),
-        ),
-        home: const HomeScreen(),
+    return FutureBuilder(
+      future: Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
       ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const MaterialApp(
+            home: Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        }
+
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => ProductRepository()),
+          ],
+          child: MaterialApp(
+            title: 'Medilink',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            home: const HomeScreen(),
+          ),
+        );
+      },
     );
   }
 }
+

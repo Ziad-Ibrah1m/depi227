@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "458884380207",
-    "project_id": "depi-f6789",
-    "storage_bucket": "depi-f6789.firebasestorage.app"
+    "project_number": "661333570206",
+    "project_id": "depi-227",
+    "storage_bucket": "depi-227.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:458884380207:android:3da6d6e91374fde5eaf8da",
+        "mobilesdk_app_id": "1:661333570206:android:79077cbd9226085c9b818f",
         "android_client_info": {
           "package_name": "com.example.depi227"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "458884380207-bofos92j0kikii138fkuipa8ondb3m3r.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDksUnS5fiSdeUeze2HzVoWyreOiNEQwIM"
+          "current_key": "AIzaSyBm0CVVzvj9PZZijeh9WE84-ItKxSUSU30"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "458884380207-bofos92j0kikii138fkuipa8ondb3m3r.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
